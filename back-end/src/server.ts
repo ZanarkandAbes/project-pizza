@@ -28,4 +28,4 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 });
 
-app.listen(3000, () => console.log("SERVIDOR ONLINE NA PORTA 3000"));
+app.listen(8080, () => console.log("SERVIDOR ONLINE NA PORTA 8080"));
