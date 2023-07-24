@@ -7,10 +7,13 @@ import logoImg from "../../public/logo.svg"
 
 import { Input } from "../components/ui/Input"
 import { Button } from "../components/ui/Button"
+import { toast } from "react-toastify"
 
 import { AuthContext } from "../contexts/AuthContext"
 
 import Link from "next/link"
+
+import { canSSRGuest } from "../utils/canSSRGuest"
 
 export default function Home() {
   const { signIn } = useContext(AuthContext)
@@ -23,12 +26,21 @@ export default function Home() {
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
 
+    if (email === "" || password === "") {
+      toast.warning("Preencha os campos !")
+      return
+    }
+
+    setLoading(true)
+
     const data = {
       email,
       password
     }
 
     await signIn(data)
+
+    setLoading(false)
   }
 
   return (
@@ -43,7 +55,7 @@ export default function Home() {
         <form onSubmit={handleLogin}>
           <Input placeholder="Digite seu email" type="text" value={email} onChange={ (e) => setEmail(e.target.value) }/>
           <Input placeholder="Digite sua senha" type="password" value={password} onChange={ (e) => setPassword(e.target.value) }/>
-          <Button type="submit" loading={false}>Acessar</Button>
+          <Button type="submit" loading={loading}>Acessar</Button>
         </form>
 
         <Link href="/signup" legacyBehavior>
@@ -55,3 +67,10 @@ export default function Home() {
     </>
   )
 }
+
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+  
+  return {
+    props: {}
+  }
+})
