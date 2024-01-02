@@ -1,1 +1,4 @@
 yarn prisma migrate dev (comando pra criar a migration)
+
+yarn create next-app (cria o front-end em nextjs)
+
